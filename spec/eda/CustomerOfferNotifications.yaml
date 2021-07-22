@@ -1,0 +1,145 @@
+asyncapi: 2.0.0
+info:
+  title: CustomerOfferEvents
+  version: 1.0.0
+  description: "State change notifications for CustomerOffer Service Domain"
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+servers:
+  development:
+    url: 'coreless-kafka-kafka-bootstrap-mercury.bian-coreless-df320be24f0424156040b8c0440947c1-0000.us-south.containers.appdomain.cloud:443'
+    protocol: kafka
+    description: Coreless Kafka broker
+defaultContentType: application/json
+channels:
+  'bian/customeroffer':
+    description: Customer Offer
+    subscribe:
+      summary: >-
+        Subscribe to notifications about Customer Offers.
+      operationId: customerOfferEvent
+      message:
+        $ref: '#/components/messages/customerOfferEvent'
+components:
+  messages:
+    customerOfferEvent:
+      name: customerOfferEvent
+      title: Customer Offer Notification Event
+      summary: CustomerOffer Notification Event
+      contentType: application/json
+      headers:
+        type: object
+        required:
+          - ce_specversion
+          - ce_id
+          - ce_source
+          - ce_type
+        properties:
+          ce_specversion:
+            type: string
+            description: The version of the CloudEvents specification which the event uses.
+            enum:
+              - "1.0"
+          ce_id:
+            type: string
+            minLength: 1
+            description: Identifies the event.
+          ce_source:
+            type: string
+            format: uri-reference
+            minLength: 1
+            description: Identifies the context in which an event happened.
+          ce_type:
+            type: string
+            minLength: 1
+            description: Describes the type of event related to the originating occurrence.
+            enum:
+              - org.bian.eda.customeroffer.initiated
+              - org.bian.eda.customeroffer.completed
+              - org.bian.eda.customeroffer.successful
+              - org.bian.eda.customeroffer.abandoned
+          ce_subject:
+            type: string
+            description: Describes the subject of the event in the context of the event producer (identified by source).
+          ce_time:
+            type: string
+            format: date-time
+            description: Timestamp of when the occurrence happened. Must adhere to RFC 3339.
+          content-type:
+            type: string
+            enum:
+              - application/json
+      payload:
+        $ref: '#/components/schemas/customerOfferStatePayload'
+      examples:
+        - initiated:
+            name: Customer Offer Initiated Example
+            headers:
+              ce_specversion: "1.0"
+              ce_id: 05b894ab-a61d-4566-8a57-87ef8c2fbc5d
+              ce_source: "/somesource/subcontext"
+              ce_type: org.bian.eda.customeroffer.initiated
+              content-type: application/json              
+            payload:
+              customerOfferReference:
+                id: 9
+                status: pricing_accepted
+              customerReference:
+                id: 12345
+                name: John Doe
+              facilityApplicationReference:
+                productCode: CL
+              consumerLoanReference:
+                id: CLSSR765266
+                status: INITIALIZED
+        - completed:
+            name: Customer Offer Completed Example
+            headers:
+              ce_specversion: "1.0"
+              ce_id: d9edc088-cc2a-403b-9ced-053aa671771b
+              ce_source: "/somesource/subcontext"
+              ce_type: org.bian.eda.customeroffer.completed
+              content-type: application/json              
+            payload:
+              customerOfferReference:
+                id: 9
+                status: pricing_accepted
+              customerReference:
+                id: 12345
+                name: John Doe
+              facilityApplicationReference:
+                productCode: CL
+              consumerLoanReference:
+                id: CLSSR765266
+                status: INITIALIZED
+  schemas:
+    customerOfferStatePayload:
+      type: object
+      properties:
+        customerOfferReference:
+          type: object
+          properties:
+            id:
+              type: integer
+            status:
+              type: string
+        customerReference:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        facilityApplicationReference:
+          type: object
+          properties:
+            productCode:
+              type: string
+        consumerLoanReference:
+          type: object
+          properties:
+            id:
+              type: string
+            status:
+              type: string

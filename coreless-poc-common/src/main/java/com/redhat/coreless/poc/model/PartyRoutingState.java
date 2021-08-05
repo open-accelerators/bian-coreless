@@ -32,12 +32,12 @@ public class PartyRoutingState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PartyRoutingState that = (PartyRoutingState) o;
-        return Objects.equals(customerOfferStatus, that.customerOfferStatus) && Objects.equals(processId, that.processId);
+        return Objects.equals(processId, that.processId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerOfferStatus, processId);
+        return Objects.hash(processId);
     }
 
     @Override

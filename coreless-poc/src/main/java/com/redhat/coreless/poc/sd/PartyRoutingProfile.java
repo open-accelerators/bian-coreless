@@ -20,7 +20,7 @@ public class PartyRoutingProfile extends RouteBuilder {
      * Defines Apache Camel routes using REST DSL fluent API.
      */
     public void configure() {
-        from("kafka:{{consumer.topic}}?brokers={{kafka.host}}&valueDeserializer=com.redhat.coreless.poc.deserializer.CustomerOfferEventDeserializer")
+        from("kafka:{{consumer.topic}}?brokers={{kafka.host}}&valueDeserializer=com.redhat.coreless.poc.deserializer.CustomerOfferEventDeserializer").id("consumeCustomerOfferEvent")
                 .bean(this, "updatePartyRoutingState(${exchange})");
 
         from("direct:retrievePartyStateStatus").process(exchange -> {

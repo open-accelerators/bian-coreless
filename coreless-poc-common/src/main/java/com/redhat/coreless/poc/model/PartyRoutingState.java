@@ -6,6 +6,9 @@ public class PartyRoutingState {
     private String customerOfferStatus;
     private String processId;
 
+    public PartyRoutingState() {
+    }
+
     public PartyRoutingState(String customerOfferStatus, String processId) {
         this.customerOfferStatus = customerOfferStatus;
         this.processId = processId;

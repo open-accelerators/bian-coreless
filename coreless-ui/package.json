@@ -49,6 +49,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "config": {
+    "coreui_library_short_version": "4.0"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

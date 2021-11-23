@@ -38,17 +38,17 @@
     "react-scripts": "^4.0.3",
     "sass": "^1.43.2"
   },
-  
   "engines": {
     "node": ">=10",
     "npm": ">=6"
   },
-    "scripts": {
+  "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "config": {
     "coreui_library_short_version": "4.0"
   },

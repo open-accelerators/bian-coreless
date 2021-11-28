@@ -8,7 +8,7 @@ WORKDIR /app
 
 ENV PORT=8080 \
     SERVICE_HOST="192.168.49.2" \
-    SERVICE_PORT="31951"
+    SERVICE_PORT="32384"
 
 COPY ["package.json", "package-lock.json", "./"]
 

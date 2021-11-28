@@ -21,11 +21,10 @@ var corsOptions = {
 
 const PORT = process.env.PORT || 8080;
 const SERVICE_HOST = process.env.SERVICE_HOST || '192.168.49.2';
-const SERVICE_PORT = process.env.SERVICE_PORT || '31951';
+const SERVICE_PORT = process.env.SERVICE_PORT || '32384';
 
 app.post('/co', function(req, res) {
     console.log(req.body.procedure.customerReference);
-    res.json({ message: req.body.procedure.customerReference });
 
     // Build the post string from an object
     var post_data = JSON.stringify(req.body);
@@ -44,10 +43,10 @@ app.post('/co', function(req, res) {
     };
 
     // Set up the request
-    var post_req = http.request(post_options, function(res) {
-        if (res) {
-          console.log(res.statusCode);
-        //   console.log(res);
+    var post_req = http.request(post_options, function(response) {
+        if (response) {
+          console.log(response.statusCode);
+          res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response code: ' + response.statusCode });
         }
     });
 

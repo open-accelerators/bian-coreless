@@ -23,6 +23,9 @@ export default class CustomerOffer extends React.Component {
       customerEmail: '',
       customerAddress: '',
       customerIncome: '',
+      customerRequestedServicesCC: false,
+      customerRequestedServicesLoan: false,
+      customerRequestedServicesNA: false,
       response: '',
     }
   }
@@ -33,7 +36,15 @@ export default class CustomerOffer extends React.Component {
       customerEmail: '',
       customerAddress: '',
       customerIncome: '',
+      customerRequestedServicesCC: false,
+      customerRequestedServicesLoan: false,
+      customerRequestedServicesNA: false,
     })
+    setTimeout(() => {
+      this.setState({
+        response: '',
+      })
+    }, 3000)
   }
   handleInputChanged(event) {
     switch (event.target.id) {
@@ -58,8 +69,26 @@ export default class CustomerOffer extends React.Component {
         })
         break
       case 'CustomerIncome':
+        const income = event.target.value
+        if (income === '' || /^[0-9\b]+$/.test(income)) {
+          this.setState({
+            customerIncome: income,
+          })
+        }
+        break
+      case 'CustomerRequestedServicesCC':
         this.setState({
-          customerIncome: event.target.value,
+          customerRequestedServicesCC: !this.state.customerRequestedServicesCC,
+        })
+        break
+      case 'CustomerRequestedServicesLoan':
+        this.setState({
+          customerRequestedServicesLoan: !this.state.customerRequestedServicesLoan,
+        })
+        break
+      case 'CustomerRequestedServicesNA':
+        this.setState({
+          customerRequestedServicesNA: !this.state.customerRequestedServicesNA,
         })
         break
     }
@@ -142,9 +171,24 @@ export default class CustomerOffer extends React.Component {
                 <CFormLabel htmlFor="CustomerRequestedServices">
                   <strong>Requested Services</strong>
                 </CFormLabel>
-                <CFormCheck id="CustomerRequestedServices" label="Credit Card" />
-                <CFormCheck id="CustomerRequestedServices" label="Loan" />
-                <CFormCheck id="CustomerRequestedServices" label="New Account" />
+                <CFormCheck
+                  id="CustomerRequestedServicesCC"
+                  label="Credit Card"
+                  checked={this.state.customerRequestedServicesCC}
+                  onClick={this.handleInputChanged.bind(this)}
+                />
+                <CFormCheck
+                  id="CustomerRequestedServicesLoan"
+                  label="Loan"
+                  checked={this.state.customerRequestedServicesLoan}
+                  onClick={this.handleInputChanged.bind(this)}
+                />
+                <CFormCheck
+                  id="CustomerRequestedServicesNA"
+                  label="New Account"
+                  checked={this.state.customerRequestedServicesNA}
+                  onClick={this.handleInputChanged.bind(this)}
+                />
               </div>
             </CForm>
           </CCardBody>

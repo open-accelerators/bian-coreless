@@ -48,7 +48,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3001",
   "config": {
     "coreui_library_short_version": "4.0"
   },

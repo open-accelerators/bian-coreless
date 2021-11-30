@@ -1,3 +1,72 @@
+# Prerequisites
+
+This project depends on the existance of a running local Minikube cluster
+with a kafka cluster and a customer-offer BIAN service deployed on the minikube cluster.
+
+# Local runtime
+
+NOTE: 
+In directory ./server/index.js lines 22-24 you can find default values for PORT, SERVICE_PORT and SERVICE_HOST.
+These variables can be modified if required for local runtime.
+
+In this project directory, run:
+
+## `npm start`
+
+Runs the app in development mode.
+Open [http://localhost:${PORT}](http://localhost:8080 by default) to view it in the browser.
+
+To exit runtime type [Ctrl-C] in CLI
+
+# Containerized runtime
+
+Start by running:
+
+## `minikube start --memory=4096`
+
+Starts local Minikube cluster
+
+In this project directory, run:
+
+## `kubectl apply -f deploy/00_deployment.yaml`
+
+Deploys project to minikube cluster using 00_deployment.yaml file in ./deploy/ directory
+
+run:
+
+## `kubectl get pods`
+
+To view coreless-ui pod created by deployment
+
+run:
+
+## `kubectl get svc`
+
+To view coreless-ui service created by deployment
+
+To expose coreless-ui URL, run:
+
+## `minikube service coreless-ui --url=true`
+
+Exposes URL to the app in development mode.
+Hold CNTR and click on URL (or copy link to browser) to view it in the browser.
+
+Stop by running:
+
+## `minikube stop`
+
+Stops local Minikube cluster
+
+---
+
+*** Frontend Documentation ***
+
+From this project directory, run:
+
+### `cd frontend/`
+
+Navigates to React App directory
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

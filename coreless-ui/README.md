@@ -2,6 +2,7 @@
 
 This project depends on the existance of a running local Minikube cluster
 with a kafka cluster and a customer-offer BIAN service deployed on the minikube cluster.
+cusomer-offer BIAN service URL must be exposed.
 
 # Local runtime
 
@@ -10,6 +11,12 @@ In directory ./server/index.js lines 22-24 you can find default values for PORT,
 These variables can be modified if required for local runtime.
 
 In this project directory, run:
+
+## `npm install`
+
+## `npm --prefix ./frontend/ install`
+
+## `npm --prefix ./frontend/ run build`
 
 ## `npm start`
 

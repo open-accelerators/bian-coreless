@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 var request = require('request');
 var http = require('http');
 
-const path = __dirname + '/../views/';
+const path = __dirname + '/../frontend/build/';
 
 const app = express();
 app.use(express.static(path));

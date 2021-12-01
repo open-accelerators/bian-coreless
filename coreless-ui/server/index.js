@@ -46,9 +46,13 @@ app.post('/co', function(req, res) {
     var post_req = http.request(post_options, function(response) {
         if (response) {
           console.log(response.statusCode);
-          res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response code: ' + response.statusCode });
+          res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + response.statusCode });
         }
     });
+    post_req.on('error', error => {
+      console.error(error)
+      res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + error });
+    })
 
     // post the data
     post_req.write(post_data);

@@ -40,11 +40,6 @@ export default class CustomerOffer extends React.Component {
       customerRequestedServicesLoan: false,
       customerRequestedServicesNA: false,
     })
-    setTimeout(() => {
-      this.setState({
-        response: '',
-      })
-    }, 3000)
   }
   handleInputChanged(event) {
     switch (event.target.id) {
@@ -94,6 +89,7 @@ export default class CustomerOffer extends React.Component {
     }
   }
   handleButtonClicked() {
+    this.setState({ response: 'Loading...' })
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

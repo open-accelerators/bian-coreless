@@ -1,7 +1,5 @@
 const express = require("express");
-// npm install body-parser --save
 const bodyParser = require('body-parser')
-// npm install request
 var request = require('request');
 var http = require('http');
 
@@ -20,16 +18,15 @@ var corsOptions = {
 };
 
 const PORT = process.env.PORT || 8080;
-const SERVICE_HOST = process.env.SERVICE_HOST || '192.168.49.2';
-const SERVICE_PORT = process.env.SERVICE_PORT || '32384';
+const SERVICE_HOST = process.env.CO_SERVICE_HOST || '192.168.49.2';
+const SERVICE_PORT = process.env.CO_SERVICE_PORT || '31723';
+const PRP_SERVICE_HOST = process.env.PRP_SERVICE_HOST || '192.168.49.2';
+const PRP_SERVICE_PORT = process.env.PRP_SERVICE_PORT || '32481';
 
-app.post('/co', function(req, res) {
-    console.log(req.body.procedure.customerReference);
+app.post('/customerOffer', function(req, res) {
 
-    // Build the post string from an object
     var post_data = JSON.stringify(req.body);
 
-    // An object of options to indicate where to post to
     var post_options = {
         host: `${SERVICE_HOST}`,
         port: `${SERVICE_PORT}`,
@@ -42,21 +39,45 @@ app.post('/co', function(req, res) {
         }
     };
 
-    // Set up the request
     var post_req = http.request(post_options, function(response) {
         if (response) {
-          console.log(response.statusCode);
           res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + response.statusCode });
         }
     });
+
     post_req.on('error', error => {
       console.error(error)
       res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + error });
     })
 
-    // post the data
     post_req.write(post_data);
     post_req.end();
+});
+
+app.get('/partyRoutingProfile', function(req, res) {
+
+  var get_options = {
+      host: `${PRP_SERVICE_HOST}`,
+      port: `${PRP_SERVICE_PORT}`,
+      path: '/party-routing-profile/sd1/party-state',
+      method: 'GET',
+  };
+
+  var get_req = http.request(get_options, function(response) {
+      if (response) {
+        response.setEncoding('utf8');
+        response.on('data', function (body) {
+          res.json({ prpData: JSON.stringify(JSON.parse(body).partyRoutingStates), error: '' });
+        });
+      }
+  });
+
+  get_req.on('error', error => {
+    console.error(error)
+    res.json({ prpData: JSON.stringify([]), error: error });
+  })
+
+  get_req.end();
 });
 
 app.listen(PORT, () => {

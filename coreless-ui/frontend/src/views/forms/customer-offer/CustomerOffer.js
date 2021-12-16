@@ -1,14 +1,12 @@
 import React from 'react'
 import {
   CButton,
-  CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
   CFormCheck,
   CRow,
 } from '@coreui/react'
@@ -95,7 +93,7 @@ export default class CustomerOffer extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ procedure: { customerReference: this.state.customerFirstName } }),
     }
-    fetch('/co', requestOptions)
+    fetch('/customerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ response: data.message })

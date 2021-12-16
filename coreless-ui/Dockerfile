@@ -7,8 +7,10 @@ LABEL maintainer = ["ishishov@redhat.com"]
 WORKDIR /app
 
 ENV PORT=0 \
-    SERVICE_HOST= \
-    SERVICE_PORT=
+    CO_SERVICE_HOST= \
+    CO_SERVICE_PORT= \
+    PRP_SERVICE_HOST= \
+    PRP_SERVICE_PORT=
 
 COPY ["package.json", "package-lock.json", "./"]
 

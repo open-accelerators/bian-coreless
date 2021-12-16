@@ -56,6 +56,11 @@ const _nav = [
         name: 'New Customer Offer',
         to: '/forms/customer-offer',
       },
+      {
+        component: CNavItem,
+        name: 'Get Party Routing Profile',
+        to: '/forms/party-routing-profile',
+      },
     ],
   },
   {

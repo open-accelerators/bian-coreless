@@ -7,7 +7,7 @@ cusomer-offer BIAN service URL must be exposed.
 # Local runtime
 
 NOTE: 
-In directory ./server/index.js lines 22-24 you can find default values for PORT, SERVICE_PORT and SERVICE_HOST.
+In directory ./server/index.js lines 22-26 you can find default values for PORT and HOST variables.
 These variables can be modified if required for local runtime.
 
 In this project directory, run:

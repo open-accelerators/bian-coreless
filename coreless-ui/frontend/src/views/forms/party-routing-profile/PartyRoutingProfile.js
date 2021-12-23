@@ -44,7 +44,9 @@ export default class PartyRoutingProfile extends React.Component {
                 {Object.entries(this.state.dataArray).map((item, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{item[1].processId}</CTableDataCell>
-                    <CTableDataCell>{item[1].customerOfferStatus}</CTableDataCell>
+                    <CTableDataCell>
+                      {item[1].customerOfferStatus == '1' ? 'Complete' : 'Processing'}
+                    </CTableDataCell>
                   </CTableRow>
                 ))}
               </CTableBody>

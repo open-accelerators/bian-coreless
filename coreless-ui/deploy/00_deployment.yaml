@@ -23,9 +23,9 @@ spec:
             - name: PORT
               value: $(CORELESS_UI_SERVICE_PORT)
             - name: CO_SERVICE_HOST
-              value: 'customer-offer-http-route'
+              value: 'customer-offer-camelk-rest'
             - name: CO_SERVICE_PORT
-              value: '8080'
+              value: '80'
             - name: PRP_SERVICE_HOST
               value: 'party-routing-profile-camelk-rest'
             - name: PRP_SERVICE_PORT

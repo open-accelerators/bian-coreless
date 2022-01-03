@@ -19,9 +19,9 @@ var corsOptions = {
 
 const PORT = process.env.PORT || 8080;
 const SERVICE_HOST = process.env.CO_SERVICE_HOST || '192.168.49.2';
-const SERVICE_PORT = process.env.CO_SERVICE_PORT || '31723';
+const SERVICE_PORT = process.env.CO_SERVICE_PORT || '31245';
 const PRP_SERVICE_HOST = process.env.PRP_SERVICE_HOST || '192.168.49.2';
-const PRP_SERVICE_PORT = process.env.PRP_SERVICE_PORT || '32481';
+const PRP_SERVICE_PORT = process.env.PRP_SERVICE_PORT || '32041';
 
 app.post('/customerOffer', function(req, res) {
 
@@ -78,6 +78,37 @@ app.get('/partyRoutingProfile', function(req, res) {
   })
 
   get_req.end();
+});
+
+app.put('/UpdateCustomerOffer', function(req, res) {
+
+  var post_data = JSON.stringify(req.body);
+
+  var post_options = {
+      host: `${SERVICE_HOST}`,
+      port: `${SERVICE_PORT}`,
+      path: '/customer-offer/sd1/customer-offer-procedure/' + req.body.procedure.customerReference + '/update',
+      method: 'PUT',
+      headers: {
+          'Host': `${SERVICE_HOST}`,
+          'Content-Type': 'application/json',
+          'Content-Length': post_data.length
+      }
+  };
+
+  var post_req = http.request(post_options, function(response) {
+      if (response) {
+        res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + response.statusCode });
+      }
+  });
+
+  post_req.on('error', error => {
+    console.error(error)
+    res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + error });
+  })
+
+  post_req.write(post_data);
+  post_req.end();
 });
 
 app.listen(PORT, () => {

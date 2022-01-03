@@ -186,7 +186,7 @@ export default class CustomerOffer extends React.Component {
               </div>
             </CForm>
           </CCardBody>
-          <CButton type="submit" className="mb-3" onClick={this.handleButtonClicked.bind(this)}>
+          <CButton type="submit" color="dark" onClick={this.handleButtonClicked.bind(this)}>
             Validate
           </CButton>
           <div>

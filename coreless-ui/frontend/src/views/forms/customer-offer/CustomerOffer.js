@@ -1,14 +1,12 @@
 import React from 'react'
 import {
   CButton,
-  CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
   CFormCheck,
   CRow,
 } from '@coreui/react'
@@ -40,11 +38,6 @@ export default class CustomerOffer extends React.Component {
       customerRequestedServicesLoan: false,
       customerRequestedServicesNA: false,
     })
-    setTimeout(() => {
-      this.setState({
-        response: '',
-      })
-    }, 3000)
   }
   handleInputChanged(event) {
     switch (event.target.id) {
@@ -94,12 +87,13 @@ export default class CustomerOffer extends React.Component {
     }
   }
   handleButtonClicked() {
+    this.setState({ response: 'Loading...' })
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ procedure: { customerReference: this.state.customerFirstName } }),
     }
-    fetch('/co', requestOptions)
+    fetch('/customerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ response: data.message })
@@ -192,7 +186,7 @@ export default class CustomerOffer extends React.Component {
               </div>
             </CForm>
           </CCardBody>
-          <CButton type="submit" className="mb-3" onClick={this.handleButtonClicked.bind(this)}>
+          <CButton type="submit" color="dark" onClick={this.handleButtonClicked.bind(this)}>
             Validate
           </CButton>
           <div>

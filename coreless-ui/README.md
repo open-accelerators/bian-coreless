@@ -1,61 +1,61 @@
 # Prerequisites
 
-This project depends on the existance of a running local Minikube cluster
-with a kafka cluster and a customer-offer BIAN service deployed on the minikube cluster.
+In order to run this project, you will need:
+
+    * A running Kubernetes cluster
+    * A full Mercury deployment on the cluster
 
 # Local runtime
 
 NOTE: 
-In directory ./server/index.js lines 22-24 you can find default values for PORT, SERVICE_PORT and SERVICE_HOST.
+In directory ./server/index.js lines 20-24 you can find default values for PORT and HOST variables.
 These variables can be modified if required for local runtime.
 
-In this project directory, run:
+## Installations
 
-## `npm start`
+In the _coreless-ui_ project directory, run:
+
+`npm install`
+
+`npm --prefix ./frontend/ install`
+
+`npm --prefix ./frontend/ run build`
+
+## Runtime
+
+To start runtime, run:
+
+`npm start`
 
 Runs the app in development mode.
-Open [http://localhost:${PORT}](http://localhost:8080 by default) to view it in the browser.
+Open [http://localhost:${PORT}](http://localhost:8080) to view it in the browser.
 
 To exit runtime type [Ctrl-C] in CLI
 
 # Containerized runtime
 
-Start by running:
+## Deployment to Minikube
 
-## `minikube start --memory=4096`
+Start local Minikube cluster by running:
 
-Starts local Minikube cluster
+`minikube start --memory=4096`
 
-In this project directory, run:
+To deploy project resources to minikube cluster, in this project directory, run:
 
-## `kubectl apply -f deploy/00_deployment.yaml`
+`kubectl apply -f deploy/00_deployment.yaml`
 
-Deploys project to minikube cluster using 00_deployment.yaml file in ./deploy/ directory
-
-run:
-
-## `kubectl get pods`
-
-To view coreless-ui pod created by deployment
-
-run:
-
-## `kubectl get svc`
-
-To view coreless-ui service created by deployment
+## Runtime
 
 To expose coreless-ui URL, run:
 
-## `minikube service coreless-ui --url=true`
+`minikube service coreless-ui --url=true`
 
 Exposes URL to the app in development mode.
 Hold CNTR and click on URL (or copy link to browser) to view it in the browser.
 
-Stop by running:
+Stop local Minikube cluster by running:
 
-## `minikube stop`
-
-Stops local Minikube cluster
+`minikube stop`
 
 ---
 

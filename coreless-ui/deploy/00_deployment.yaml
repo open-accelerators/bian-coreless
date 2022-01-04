@@ -15,17 +15,21 @@ spec:
     spec:
       containers:
         - name: coreless-ui
-          image: quay.io/ishishov/coreless-ui:latest
+          image: quay.io/ecosystem-appeng/coreless-ui:1.0.0-SNAPSHOT
           ports:
             - containerPort: 8080
               name: http
           env:
             - name: PORT
               value: $(CORELESS_UI_SERVICE_PORT)
-            - name: SERVICE_HOST
-              value: 'customer-offer-http'
-            - name: SERVICE_PORT
-              value: '8080'
+            - name: CO_SERVICE_HOST
+              value: 'customer-offer-camelk-rest'
+            - name: CO_SERVICE_PORT
+              value: '80'
+            - name: PRP_SERVICE_HOST
+              value: 'party-routing-profile-camelk-rest'
+            - name: PRP_SERVICE_PORT
+              value: '80'
 ---
 apiVersion: v1
 kind: Service

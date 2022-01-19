@@ -18,31 +18,44 @@ export default class PartyRoutingProfile extends React.Component {
 
     this.state = {
       dataArray: [],
+      dataMap: new Map(),
       error: '',
     }
   }
   async componentDidMount() {
-    await fetch('/partyRoutingProfile')
+    await fetch('/getPartyRoutingProfileKeys')
       .then((res) => res.json())
       .then((data) => this.setState({ dataArray: JSON.parse(data.prpData), error: data.error }))
+
+    this.state.dataArray.map((item, index) => this.getPartyRoutingProfileStatus(item))
   }
-  refreshPage() {
-    window.location.reload(false)
+  getPartyRoutingProfileStatus(item) {
+    const requestOptions = {
+      method: 'GET',
+      headers: { item: item },
+    }
+    fetch('/getPartyRoutingProfileStatus', requestOptions)
+      .then((res) => res.json())
+      .then((data) =>
+        this.setState({
+          dataMap: this.state.dataMap.set(item, JSON.parse(data.prpData)),
+          error: data.error,
+        }),
+      )
   }
-  handleButtonClicked(item) {
-    console.log('button was clicked ', item)
+  async handleButtonClicked(item) {
     const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ procedure: { customerReference: item } }),
+      body: JSON.stringify({ customerOfferProcedureInstanceRecord: { customerReference: item } }),
     }
-    fetch('/UpdateCustomerOffer', requestOptions)
+    await fetch('/UpdateCustomerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log(data.message)
       })
 
-    this.refreshPage()
+    this.getPartyRoutingProfileStatus(item)
   }
   render() {
     return (
@@ -61,20 +74,24 @@ export default class PartyRoutingProfile extends React.Component {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {Object.entries(this.state.dataArray).map((item, index) => (
+                {this.state.dataArray.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{item[1].processId}</CTableDataCell>
+                    <CTableDataCell>{item}</CTableDataCell>
                     <CTableDataCell>
-                      {item[1].customerOfferStatus == '1' ? 'Complete' : 'Processing'}
+                      {this.state.dataMap.get(item) == '1'
+                        ? 'Complete'
+                        : this.state.dataMap.get(item) == '0'
+                        ? 'Processing'
+                        : 'Unidentified'}
                     </CTableDataCell>
                     <CTableDataCell>
-                      {item[1].customerOfferStatus == '0' ? (
+                      {this.state.dataMap.get(item) == '0' ? (
                         <CButton
                           color="dark"
                           variant="outline"
                           type="submit"
                           className="px-5 py-0"
-                          onClick={this.handleButtonClicked.bind(this, item[1].processId)}
+                          onClick={this.handleButtonClicked.bind(this, item)}
                         >
                           Update
                         </CButton>
@@ -86,6 +103,9 @@ export default class PartyRoutingProfile extends React.Component {
                 ))}
               </CTableBody>
             </CTable>
+            <div>
+              <h6>{this.state.dataArray.length ? '' : '* No records available *'}</h6>
+            </div>
             <div>
               <strong style={{ color: 'red' }}>{this.state.error}</strong>
             </div>

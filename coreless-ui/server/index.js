@@ -18,12 +18,12 @@ var corsOptions = {
 };
 
 const PORT = process.env.PORT || 8080;
-const SERVICE_HOST = process.env.CO_SERVICE_HOST || '192.168.49.2';
-const SERVICE_PORT = process.env.CO_SERVICE_PORT || '31245';
-const PRP_SERVICE_HOST = process.env.PRP_SERVICE_HOST || '192.168.49.2';
-const PRP_SERVICE_PORT = process.env.PRP_SERVICE_PORT || '32041';
+const SERVICE_HOST = process.env.CO_SERVICE_HOST || 'customer-offer-camelk-rest-ishishov.apps.ocp-dev01.lab.eng.tlv2.redhat.com';
+const SERVICE_PORT = process.env.CO_SERVICE_PORT || '80';
+const PRP_SERVICE_HOST = process.env.PRP_SERVICE_HOST || 'party-routing-profile-camelk-rest-ishishov.apps.ocp-dev01.lab.eng.tlv2.redhat.com';
+const PRP_SERVICE_PORT = process.env.PRP_SERVICE_PORT || '80';
 
-app.post('/customerOffer', function(req, res) {
+app.post('/initiateCustomerOffer', function(req, res) {
 
     var post_data = JSON.stringify(req.body);
 
@@ -41,20 +41,20 @@ app.post('/customerOffer', function(req, res) {
 
     var post_req = http.request(post_options, function(response) {
         if (response) {
-          res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + response.statusCode });
+          res.json({ message: 'Request: ' + req.body.customerOfferProcedureInstanceRecord.customerReference + '; Response: ' + response.statusCode });
         }
     });
 
     post_req.on('error', error => {
       console.error(error)
-      res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + error });
+      res.json({ message: 'Request: ' + req.body.customerOfferProcedureInstanceRecord.customerReference + '; Response: ' + error });
     })
 
     post_req.write(post_data);
     post_req.end();
 });
 
-app.get('/partyRoutingProfile', function(req, res) {
+app.get('/getPartyRoutingProfileKeys', function(req, res) {
 
   var get_options = {
       host: `${PRP_SERVICE_HOST}`,
@@ -67,7 +67,32 @@ app.get('/partyRoutingProfile', function(req, res) {
       if (response) {
         response.setEncoding('utf8');
         response.on('data', function (body) {
-          res.json({ prpData: JSON.stringify(JSON.parse(body).partyRoutingStates), error: '' });
+          res.json({ prpData: body, error: '' });
+        });
+      }
+  });
+
+  get_req.on('error', error => {
+    console.error(error)
+    res.json({ prpData: JSON.stringify([]), error: error });
+  })
+
+  get_req.end();
+});
+
+app.get('/getPartyRoutingProfileStatus', function(req, res) {
+  var get_options = {
+      host: `${PRP_SERVICE_HOST}`,
+      port: `${PRP_SERVICE_PORT}`,
+      path: '/party-routing-profile/sd1/party-state/' + req.headers.item + '/status/bq1',
+      method: 'GET',
+  };
+
+  var get_req = http.request(get_options, function(response) {
+      if (response) {
+        response.setEncoding('utf8');
+        response.on('data', function (body) {
+          res.json({ prpData: JSON.stringify(JSON.parse(body).statusInstanceRecord.customerRelationshipStatus), error: '' });
         });
       }
   });
@@ -87,7 +112,7 @@ app.put('/UpdateCustomerOffer', function(req, res) {
   var post_options = {
       host: `${SERVICE_HOST}`,
       port: `${SERVICE_PORT}`,
-      path: '/customer-offer/sd1/customer-offer-procedure/' + req.body.procedure.customerReference + '/update',
+      path: '/customer-offer/sd1/customer-offer-procedure/' + req.body.customerOfferProcedureInstanceRecord.customerReference + '/update',
       method: 'PUT',
       headers: {
           'Host': `${SERVICE_HOST}`,
@@ -98,13 +123,13 @@ app.put('/UpdateCustomerOffer', function(req, res) {
 
   var post_req = http.request(post_options, function(response) {
       if (response) {
-        res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + response.statusCode });
+        res.json({ message: 'Request: ' + req.body.customerOfferProcedureInstanceRecord.customerReference + '; Response: ' + response.statusCode });
       }
   });
 
   post_req.on('error', error => {
     console.error(error)
-    res.json({ message: 'Request: ' + req.body.procedure.customerReference + '; Response: ' + error });
+    res.json({ message: 'Request: ' + req.body.customerOfferProcedureInstanceRecord.customerReference + '; Response: ' + error });
   })
 
   post_req.write(post_data);

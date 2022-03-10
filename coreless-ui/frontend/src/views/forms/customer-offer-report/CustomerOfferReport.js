@@ -24,7 +24,7 @@ export default class CustomerOfferReport extends React.Component {
     }
   }
   async componentDidMount() {
-    await fetch('/getCustomerOffers')
+    fetch('/getCustomerOffers')
       .then((res) => res.json())
       .then((data) => this.parseData(JSON.parse(data.coData), data.error))
   }

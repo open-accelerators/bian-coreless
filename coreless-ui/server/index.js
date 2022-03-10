@@ -17,11 +17,11 @@ var corsOptions = {
   origin: "http://localhost:3000"
 };
 
-const PORT = process.env.PORT || 8080;
-const CO_SERVICE_HOST = process.env.CO_SERVICE_HOST || 'example-customer-offer-camelk-rest-ishishov-olm.apps.ocp-dev01.lab.eng.tlv2.redhat.com';
-const CO_SERVICE_PORT = process.env.CO_SERVICE_PORT || '80';
-const CO_REPORT_SERVICE_HOST = process.env.CO_REPORT_SERVICE_HOST || 'customer-offer-reporting-ishishov-olm.apps.ocp-dev01.lab.eng.tlv2.redhat.com';
-const CO_REPORT_SERVICE_PORT = process.env.CO_REPORT_SERVICE_PORT || '80';
+const PORT = process.env.PORT;
+const CO_SERVICE_HOST = process.env.CO_SERVICE_HOST;
+const CO_SERVICE_PORT = process.env.CO_SERVICE_PORT;
+const CO_REPORT_SERVICE_HOST = process.env.CO_REPORT_SERVICE_HOST;
+const CO_REPORT_SERVICE_PORT = process.env.CO_REPORT_SERVICE_PORT;
 
 app.post('/initiateCustomerOffer', function(req, res) {
 

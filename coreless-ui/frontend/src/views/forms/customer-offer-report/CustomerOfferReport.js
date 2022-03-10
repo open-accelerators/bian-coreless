@@ -12,86 +12,82 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-export default class PartyRoutingProfile extends React.Component {
+import { object } from 'prop-types'
+export default class CustomerOfferReport extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      dataArray: [],
       dataMap: new Map(),
+      dataArray: [],
       error: '',
     }
   }
   async componentDidMount() {
-    await fetch('/getPartyRoutingProfileKeys')
+    await fetch('/getCustomerOffers')
       .then((res) => res.json())
-      .then((data) => this.setState({ dataArray: JSON.parse(data.prpData), error: data.error }))
-
-    this.state.dataArray.map((item, index) => this.getPartyRoutingProfileStatus(item))
+      .then((data) => this.parseData(JSON.parse(data.coData), data.error))
   }
-  getPartyRoutingProfileStatus(item) {
-    const requestOptions = {
-      method: 'GET',
-      headers: { item: item },
-    }
-    fetch('/getPartyRoutingProfileStatus', requestOptions)
-      .then((res) => res.json())
-      .then((data) =>
-        this.setState({
-          dataMap: this.state.dataMap.set(item, JSON.parse(data.prpData)),
-          error: data.error,
-        }),
-      )
+  parseData(data, error) {
+    data.map((item, index) => {
+      this.setState({ dataMap: this.state.dataMap.set(item.id, item) })
+    })
+    this.setState({ dataArray: data, error: error })
   }
   async handleButtonClicked(item) {
     const requestOptions = {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ customerOfferProcedureInstanceRecord: { customerReference: item } }),
+      headers: { 'Content-Type': 'application/json', id: item.id },
+      body: JSON.stringify({
+        CustomerOfferProcedure: { CustomerReference: item.customerReference },
+      }),
     }
     await fetch('/UpdateCustomerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.message)
+        item.status = JSON.parse(data.coData).CustomerOfferProcessingTaskResult
+        this.setState({
+          dataMap: this.state.dataMap.set(item.id, item),
+          error: data.error,
+        })
       })
-
-    this.getPartyRoutingProfileStatus(item)
   }
   render() {
     return (
       <CRow>
         <CCol xs={12}>
           <CCardHeader>
-            <strong>Party Routing Profile</strong>
+            <strong>Customer Offer Report</strong>
           </CCardHeader>
           <CCardBody>
             <CTable align="middle" className="mb-0 border" hover responsive>
               <CTableHead color="light">
                 <CTableRow>
-                  <CTableHeaderCell width={550}>Request</CTableHeaderCell>
-                  <CTableHeaderCell width={550}>Status</CTableHeaderCell>
+                  <CTableHeaderCell width={325}>Id</CTableHeaderCell>
+                  <CTableHeaderCell width={375}>Request</CTableHeaderCell>
+                  <CTableHeaderCell width={375}>Status</CTableHeaderCell>
                   <CTableHeaderCell></CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {this.state.dataArray.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{item}</CTableDataCell>
+                    <CTableDataCell>{this.state.dataMap.get(item.id).id}</CTableDataCell>
                     <CTableDataCell>
-                      {this.state.dataMap.get(item) == '1'
-                        ? 'Complete'
-                        : this.state.dataMap.get(item) == '0'
-                        ? 'Processing'
-                        : 'Unidentified'}
+                      {this.state.dataMap.get(item.id).customerReference}
                     </CTableDataCell>
+                    <CTableDataCell>{this.state.dataMap.get(item.id).status}</CTableDataCell>
                     <CTableDataCell>
-                      {this.state.dataMap.get(item) == '0' ? (
+                      {this.state.dataMap.get(item.id).status == 'INITIATED' ? (
                         <CButton
                           color="dark"
                           variant="outline"
                           type="submit"
                           className="px-5 py-0"
-                          onClick={this.handleButtonClicked.bind(this, item)}
+                          onClick={this.handleButtonClicked.bind(
+                            this,
+                            this.state.dataMap.get(item.id),
+                          )}
                         >
                           Update
                         </CButton>

@@ -3,7 +3,7 @@
 In order to run this project, you will need:
 
     * A running Kubernetes cluster
-    * A full Mercury deployment on the cluster
+    * A full [Mercury](https://github.com/open-accelerators/mercury) deployment on the cluster
 
 # Local runtime
 

@@ -92,7 +92,7 @@ export default class CustomerOffer extends React.Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        customerOfferProcedureInstanceRecord: { customerReference: this.state.customerFirstName },
+        CustomerOfferProcedure: { CustomerReference: this.state.customerFirstName },
       }),
     }
     fetch('/initiateCustomerOffer', requestOptions)

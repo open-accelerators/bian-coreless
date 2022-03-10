@@ -58,8 +58,8 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Get Party Routing Profile',
-        to: '/forms/party-routing-profile',
+        name: 'Customer Offer Report',
+        to: '/forms/customer-offer-report',
       },
     ],
   },

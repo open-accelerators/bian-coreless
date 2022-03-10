@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: coreless-ui
-          image: quay.io/ishishov/coreless-ui:latest
+          image: quay.io/ecosystem-appeng/coreless-ui:1.0.0-SNAPSHOT
           ports:
             - containerPort: 8080
               name: http

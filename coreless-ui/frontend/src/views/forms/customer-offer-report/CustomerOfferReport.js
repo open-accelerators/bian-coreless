@@ -42,7 +42,7 @@ export default class CustomerOfferReport extends React.Component {
         CustomerOfferProcedure: { CustomerReference: item.customerReference },
       }),
     }
-    await fetch('/UpdateCustomerOffer', requestOptions)
+    fetch('/UpdateCustomerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         item.status = JSON.parse(data.coData).CustomerOfferProcessingTaskResult

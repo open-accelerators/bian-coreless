@@ -29,8 +29,8 @@ const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/Checks
 const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'))
 const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
 const CustomerOffer = React.lazy(() => import('./views/forms/customer-offer/CustomerOffer'))
-const PartyRoutingProfile = React.lazy(() =>
-  import('./views/forms/party-routing-profile/PartyRoutingProfile'),
+const CustomerOfferReport = React.lazy(() =>
+  import('./views/forms/customer-offer-report/CustomerOfferReport'),
 )
 const InputGroup = React.lazy(() => import('./views/forms/input-group/InputGroup'))
 const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
@@ -82,9 +82,9 @@ const routes = [
   { path: '/forms/form-control', name: 'Form Control', component: FormControl },
   { path: '/forms/customer-offer', name: 'Customer Offer', component: CustomerOffer },
   {
-    path: '/forms/party-routing-profile',
-    name: 'Party Routing Profile',
-    component: PartyRoutingProfile,
+    path: '/forms/customer-offer-report',
+    name: 'Customer Offer Report',
+    component: CustomerOfferReport,
   },
   { path: '/forms/select', name: 'Select', component: Select },
   { path: '/forms/checks-radios', name: 'Checks & Radios', component: ChecksRadios },

@@ -91,9 +91,13 @@ export default class CustomerOffer extends React.Component {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ procedure: { customerReference: this.state.customerFirstName } }),
+      body: JSON.stringify({
+        CustomerOfferProcedure: {
+          CustomerReference: this.state.customerFirstName,
+        },
+      }),
     }
-    fetch('/customerOffer', requestOptions)
+    fetch('/initiateCustomerOffer', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         this.setState({ response: data.message })
